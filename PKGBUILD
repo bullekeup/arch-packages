@@ -102,7 +102,7 @@ package_opencv-gstreamer-samples() {
   provides=('opencv-samples')
   conflicts=('opencv-samples')
   pkgdesc+=" (samples)"
-  depends=("opencv=$pkgver") # sample codes change with lib/API
+  depends=("opencv-gstreamer=$pkgver") # sample codes change with lib/API
   unset optdepends
 
   mkdir -p "$pkgdir/usr/share/opencv"
