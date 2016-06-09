@@ -21,8 +21,6 @@ source=("$pkgbase-$pkgver.tar.gz::https://github.com/Itseez/opencv/archive/$pkgv
         "opencv_contrib-$pkgver.tar.gz::https://github.com/Itseez/opencv_contrib/archive/$pkgver.tar.gz"
         '5852.patch'
         'opencv_a0fdc91a14f07de25d858037940fcd3ba859b4e2.patch')
-provides=('opencv')
-conflicts=('opencv')
 md5sums=('6082ee2124d4066581a7386972bfd52a'
          'a822839ad3ab79ff837c16785ea9dd10'
          '5bd9cd736b171c15cedee3a32a0c47ff'
@@ -77,6 +75,8 @@ build() {
 }
 
 package_opencv-gstreamer() {
+  provides=('opencv')
+  conflicts=('opencv')
   options=('staticlibs')
 
   cd "$srcdir/"$(echo $pkgname | sed -e s/-gstreamer//)"-$pkgver"
@@ -99,6 +99,8 @@ package_opencv-gstreamer() {
 }
 
 package_opencv-gstreamer-samples() {
+  provides=('opencv-samples')
+  conflicts=('opencv-samples')
   pkgdesc+=" (samples)"
   depends=("opencv=$pkgver") # sample codes change with lib/API
   unset optdepends
