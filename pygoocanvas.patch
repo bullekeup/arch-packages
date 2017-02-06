@@ -1,0 +1,13 @@
+diff --git a/configure.ac b/configure.ac
+index cbf32f8..2c59836 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -62,7 +62,7 @@ AM_PROG_CC_C_O
+ 
+ AM_PATH_PYTHON(2.2)
+ 
+-AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
++#AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
+ 
+ dnl check pygobject path for docs xsl
+ PKG_CHECK_MODULES(PYGOBJECT, [pygobject-2.0 >= pygobject_required_version])

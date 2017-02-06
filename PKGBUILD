@@ -1,45 +1,43 @@
-# $Id: PKGBUILD 269096 2016-06-07 12:10:37Z heftig $
-# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
-# Contributor: Jaroslav Lichtblau <dragonlord@aur.archlinux.org>
-# Contributor: Jeremy Cowgar <jeremy@cowgar.com>
+# $Id: PKGBUILD 138787 2015-08-26 14:57:27Z arodseth $
+# Maintainer: Jelle van der Waa <jelle@vdwaa.nl>
+# Contributor: Douglas Soares de Andrade <dsandrade@gmail.com>
+# Contributor: William Rea <sillywilly@gmail.com>
 
-pkgname=check
-pkgver=0.11.0
-pkgrel=1
-pkgdesc="A unit testing framework for C"
-url="https://libcheck.github.io/check/"
-arch=(i686 x86_64)
-license=(LGPL)
-depends=(awk)
-makedepends=(git)
-source=("git+https://github.com/libcheck/check#tag=$pkgver")
-md5sums=('SKIP')
+pkgname=pygoocanvas
+pkgver=0.14.1
+pkgrel=7
+pkgdesc='GooCanvas Python bindings'
+arch=('x86_64' 'i686')
+url='https://wiki.gnome.org/Projects/PyGoocanvas'
+license=('LGPL')
+depends=('python2' 'goocanvas1' 'pygtk')
+makedepends=('pkgconfig' 'git' 'gtk-doc')
+options=('docs')
+source=("git://github.com/GNOME/pygoocanvas.git#tag=${pkgname^^}_${pkgver//./_}"
+        "pygoocanvas.patch")
+md5sums=('SKIP'
+         '6eef440ba652eed920a546bd51fbc141')
+
+export PATH=/home/workspace/tools/pybin:$PATH
+export PYTHON=python2
 
 prepare() {
-  cd $pkgname
-  autoreconf -fvi
+  cd "$pkgname"
+
+  git apply "${srcdir}/pygoocanvas.patch"
+  ./autogen.sh CFLAGS='-I /usr/include/python2.7' --prefix=/usr --disable-docs
 }
 
-
 build() {
-  cd $pkgname
-  ./configure --prefix=/usr --disable-static
+  cd "$pkgname"
+
+  ./configure CFLAGS='-I /usr/include/python2.7' --prefix=/usr --disable-docs
   make
 }
 
-check() {
-  cd $pkgname
-  # Extremely long
-  #make -k check
-}
-
 package() {
-  cd $pkgname
-  make DESTDIR="$pkgdir" install
-
-  # get rid of the package's info directory
-  rm "$pkgdir/usr/share/info/dir"
-
-  # svn log file is too big
-  rm "$pkgdir"/usr/share/doc/check/*ChangeLog*
+  make -C "$pkgname" DESTDIR="$pkgdir" install
 }
+
+# getver: raw.githubusercontent.com/GNOME/pygoocanvas/master/NEWS
+# vim:set ts=2 sw=2 et:
