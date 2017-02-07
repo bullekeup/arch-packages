@@ -2,10 +2,11 @@
 # Maintainer: Jelle van der Waa <jelle@vdwaa.nl>
 # Contributor: Douglas Soares de Andrade <dsandrade@gmail.com>
 # Contributor: William Rea <sillywilly@gmail.com>
+# Contributor: Axel Moinet <bullekeup@gmail.com>
 
 pkgname=pygoocanvas
 pkgver=0.14.1
-pkgrel=7
+pkgrel=8
 pkgdesc='GooCanvas Python bindings'
 arch=('x86_64' 'i686')
 url='https://wiki.gnome.org/Projects/PyGoocanvas'
