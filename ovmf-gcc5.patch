@@ -1,14 +1,15 @@
 diff --git a/tools/firmware/Makefile b/tools/firmware/Makefile
-index 5458017..2e37755 100644
+index ca5df42..0c5ff75 100644
 --- a/tools/firmware/Makefile
 +++ b/tools/firmware/Makefile
-@@ -25,6 +25,9 @@ ovmf-dir:
- 	sed 's|python |python2 |g' -i "ovmf-dir/BaseTools/Tests/GNUmakefile"
- 	patch -Np1 -i ovmf-gcc4.9-basetools.patch
- 	patch -Np1 -i ovmf-gcc4.9-ovmfpkg.patch
+@@ -21,6 +21,10 @@ LD32BIT-$(CONFIG_FreeBSD) := LD32BIT_FLAG=-melf_i386_fbsd
+ 
+ ovmf-dir:
+ 	GIT=$(GIT) $(XEN_ROOT)/scripts/git-checkout.sh $(OVMF_UPSTREAM_URL) $(OVMF_UPSTREAM_REVISION) ovmf-dir
++	sed 's|python |python2 |g' -i "ovmf-dir/BaseTools/BinWrappers/PosixLike"/* || true
++	sed 's|python |python2 |g' -i "ovmf-dir/BaseTools/Tests/GNUmakefile"
 +	patch -Np1 -i ovmf-gcc5-basetools.patch
 +	patch -Np1 -i ovmf-gcc5-ovmfpkg.patch
-+	patch -Np1 -i ovmf-vfrcompiler.patch
  	cp ovmf-makefile ovmf-dir/Makefile;
  
  seabios-dir:

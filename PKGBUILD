@@ -5,15 +5,15 @@
 # Contributor: Revellion
 
 pkgname=xen
-pkgver=4.5.1
-pkgrel=2
+pkgver=4.5.2
+pkgrel=1
 pkgdesc="Virtual Machine Hypervisor & Tools"
 arch=(i686 x86_64)
 url="http://www.xenproject.org/"
 license=(GPL2)
 depends=(bridge-utils curl gnutls iproute2 libaio libcap-ng libiscsi libjpeg-turbo libpng libseccomp lzo2 nss pixman pciutils python python2 sdl yajl spice usbredir)
 [[ "$CARCH" == "x86_64" ]] && depends+=(lib32-glibc)
-makedepends=(bin86 cmake dev86 git iasl markdown ocaml-findlib figlet wget spice-protocol)
+makedepends=(bin86 cmake dev86 git iasl markdown ocaml-findlib figlet wget spice-protocol nasm)
 [[ "$CARCH" == "x86_64" ]] && makedepends+=(gcc-multilib lib32-fakeroot lib32-libltdl)
 optdepends=('xen-docs: Official Xen Documentation' 'openvswitch: Optional Networking support')
 conflicts=(xen-4.2{,-testing-hg} xen-{gdbsx,hg-unstable,rc,git} xen-4.3{,-testing-hg})
@@ -38,13 +38,9 @@ source=(http://bits.xensource.com/oss-xen/release/$pkgver/$pkgname-$pkgver.tar.g
     etherboot-gcc5.patch
     gcc5.patch
     gnutls-3.4.0.patch::http://git.alpinelinux.org/cgit/aports/plain/main/xen/gnutls-3.4.0.patch?id=628f27939412a7d6fb67734bd644119a1f49463a
-    ovmf.patch
-    ovmf-gcc4.9-basetools.patch
-    ovmf-gcc4.9-ovmfpkg.patch
     ovmf-gcc5.patch
     ovmf-gcc5-basetools.patch
     ovmf-gcc5-ovmfpkg.patch
-    ovmf-vfrcompiler.patch
     seabios-gcc5.patch
     efi-xen.cfg
     grub.conf
@@ -59,7 +55,7 @@ noextract=(lwip-1.3.0.tar.gz
     gmp-4.3.2.tar.bz2
     ipxe-git-9a93db3f0947484e30e753bbd61a10b17336e20e.tar.gz)
 
-sha256sums=('668c11d4fca67ac44329e369f810356eacd37b28d28fb96e66aac77f3c5e1371'
+sha256sums=('4c9e5dac4eea484974e9f76da2756c8e0973b4e884d28d37e955df9ebf00e7e8'
             '632ce8c193ccacc3012bd354bdb733a4be126f7c098e111930aa41dad537405c'
             '772e4d550e07826665ed0528c071dd5404ef7dbe1825a38c8adbc2a00bca948f'
             '1795c7d067a43174113fdf03447532f373e1c6c57c08d61d9e4e9be5e244b05e'
@@ -76,13 +72,9 @@ sha256sums=('668c11d4fca67ac44329e369f810356eacd37b28d28fb96e66aac77f3c5e1371'
             'deeec880522c1374ad135dc8b4c14c7b301464a60fbac410efb3db70f670eed9'
             '22b03d220aa6caa0bbe04868a1839a658a99d020bde95a31952a2a624490ef95'
             'e25d38376e22f6f935d2c0ce1b9d6e6b47ff261b5e6056bc3b47168739d7a992'
-            '1c44b9dc848bb6c3ef2ab76e4807a0b3ed360aea6b13b5b86d2bf5301d14247b'
-            '45aae7a1d48357e5f981c12870b5bcac0dd0f630f84e398160d8c9adb42a6674'
-            '8e16638d0cc366d1eaae7ccbcf43215853b4444a625478ec8f6e0a2c655370d9'
-            '7b1a96dceff7c9dcb9d27fdcc0d6be5034082da7d68f2b6d290953f2c5956635'
-            '03384d2e797484ed79dde347167aca379006fc5843ecab872c459a1fc8c3d758'
-            'b501b0d5259bfc593e70ad2fedf1ea1d15cd01ef1315ec759f65311042ee9397'
-            '16d85d1e5758f8284591497409e477af522cf12803f14412fbf0f961d8a3e632'
+            '60b9cb056d5e6e66d8d3990ff298f5ef07516ce9514ec317a3ab65050612eb0a'
+            '7b2e1f892cbd9e3355aa0ab9dc66adef95279f1aef4ec59cde12cf0108e82811'
+            '8a5e20f66d90acfcafd6ae4165ef14501fe514f70fbe2eb6c198b70280dbda95'
             '091f5eed7e33b45cabb232e9a03dd6c1abae1a820b804c888c20d4b7e673618f'
             'ceaff798a92a7aef1465a0a0b27b1817aedd2c857332b456aaa6dd78dc72438f'
             '3f0af16958c3e057b9baa5afc47050d9adf7dd553274dd97ae4f35938fefb568'
@@ -108,13 +100,9 @@ prepare() {
 
     # OVMF Compile support (Pulls from GIT repo, so patching to patch after pull request)
     echo "Patching OVMF..."
-    patch -Np1 -i "$srcdir/ovmf.patch"
     patch -Np1 -i "$srcdir/ovmf-gcc5.patch"
-    cp "$srcdir/ovmf-gcc4.9-basetools.patch" tools/firmware/
-    cp "$srcdir/ovmf-gcc4.9-ovmfpkg.patch" tools/firmware/
     cp "$srcdir/ovmf-gcc5-basetools.patch" tools/firmware/
     cp "$srcdir/ovmf-gcc5-ovmfpkg.patch" tools/firmware/
-    cp "$srcdir/ovmf-vfrcompiler.patch" tools/firmware/
 
     # Uncomment line below if you want to enable ATI Passthrough support (some reported successes, untested with 4.4)
     #patch -Np1 -i "$srcdir/ati-passthrough.patch"

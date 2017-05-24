@@ -1,21 +1,21 @@
 diff --git a/BaseTools/Conf/tools_def.template b/BaseTools/Conf/tools_def.template
-index 739c33d..49e669d 100644
+index 88ec2e1..a870196 100644
 --- a/ovmf-dir/BaseTools/Conf/tools_def.template
 +++ b/ovmf-dir/BaseTools/Conf/tools_def.template
-@@ -165,6 +165,9 @@ DEFINE GCC48_X64_PREFIX        = /usr/bin/
- DEFINE GCC49_IA32_PREFIX       = /usr/bin/
- DEFINE GCC49_X64_PREFIX        = /usr/bin/
+@@ -184,6 +184,9 @@ DEFINE GCC48_X64_PREFIX        = ENV(GCC48_BIN)
+ DEFINE GCC49_IA32_PREFIX       = ENV(GCC49_BIN)
+ DEFINE GCC49_X64_PREFIX        = ENV(GCC49_BIN)
  
-+DEFINE GCC5_IA32_PREFIX       = /usr/bin/
-+DEFINE GCC5_X64_PREFIX        = /usr/bin/
++DEFINE GCC5_IA32_PREFIX        = ENV(GCC5_BIN)
++DEFINE GCC5_X64_PREFIX         = ENV(GCC5_BIN)
 +
- DEFINE UNIX_IASL_BIN           = /usr/bin/iasl
- #DEFINE UNIX_IASL_BIN           = $(HOME)/programs/iasl
+ DEFINE UNIX_IASL_BIN           = ENV(IASL_PREFIX)iasl
  DEFINE WIN_ASL_BIN_DIR         = C:\ASL
-@@ -316,6 +319,12 @@ DEFINE CLANG_BIN = /usr/bin/
+ DEFINE WIN_IASL_BIN            = DEF(WIN_ASL_BIN_DIR)\iasl.exe
+@@ -344,6 +347,12 @@ DEFINE SOURCERY_CYGWIN_TOOLS = /cygdrive/c/Program Files/CodeSourcery/Sourcery G
  #                             Required to build platforms or ACPI tables:
- #                               Intel(r) ACPI Compiler v20101013 from
- #                               http://www.acpica.org/downloads/previous_releases.php
+ #                               Intel(r) ACPI Compiler from
+ #                               https://acpica.org/downloads
 +#   GCC5       -Linux-  Requires:
 +#                             GCC 5.x
 +#                        Optional:
@@ -25,8 +25,8 @@ index 739c33d..49e669d 100644
  #   ELFGCC      -Linux-  Requires:
  #                             GCC(this tool chain uses whatever version of gcc and binutils that is installed in /usr/bin)
  #                        Optional:
-@@ -3220,6 +3229,22 @@ DEFINE GCC49_AARCH64_DLINK_FLAGS     = DEF(GCC_ARM_AARCH64_DLINK_COMMON)
- DEFINE GCC49_ARM_ASLDLINK_FLAGS      = DEF(GCC_ARM_AARCH64_ASLDLINK_FLAGS) --oformat=elf32-littlearm
+@@ -3917,6 +3926,22 @@ DEFINE GCC49_AARCH64_DLINK_FLAGS     = DEF(GCC_ARM_AARCH64_DLINK_COMMON)
+ DEFINE GCC49_ARM_ASLDLINK_FLAGS      = DEF(GCC48_ARM_ASLDLINK_FLAGS)
  DEFINE GCC49_AARCH64_ASLDLINK_FLAGS  = DEF(GCC_ARM_AARCH64_ASLDLINK_FLAGS)
  
 +DEFINE GCC5_IA32_CC_FLAGS           = DEF(GCC49_IA32_CC_FLAGS) -std=gnu89
@@ -48,7 +48,7 @@ index 739c33d..49e669d 100644
  ####################################################################################
  #
  # Unix GCC And Intel Linux ACPI Compiler
-@@ -3767,6 +3792,129 @@ RELEASE_GCC49_AARCH64_CC_FLAGS   = DEF(GCC49_AARCH64_CC_FLAGS) -Wno-unused-but-s
+@@ -4610,6 +4635,129 @@ RELEASE_GCC49_AARCH64_CC_FLAGS   = DEF(GCC49_AARCH64_CC_FLAGS) -Wno-unused-but-s
  
  ####################################################################################
  #
