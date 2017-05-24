@@ -1,0 +1,27 @@
+diff --git a/BaseTools/Source/C/VfrCompile/VfrCompiler.cpp b/BaseTools/Source/C/VfrCompile/VfrCompiler.cpp
+index da8c529..b885e71 100644
+--- a/ovmf-dir/BaseTools/Source/C/VfrCompile/VfrCompiler.cpp
++++ b/ovmf-dir/BaseTools/Source/C/VfrCompile/VfrCompiler.cpp
+@@ -84,6 +84,8 @@ CVfrCompiler::OptionInitialization (
+   mOptions.HasOverrideClassGuid          = FALSE;
+   mOptions.WarningAsError                = FALSE;
+   memset (&mOptions.OverrideClassGuid, 0, sizeof (EFI_GUID));
++
++  SET_RUN_STATUS (STATUS_STARTED);
+   
+   if (Argc == 1) {
+     Usage ();
+diff --git a/BaseTools/Source/C/VfrCompile/VfrCompiler.h b/BaseTools/Source/C/VfrCompile/VfrCompiler.h
+index fe29f7e..0054f22 100644
+--- a/ovmf-dir/BaseTools/Source/C/VfrCompile/VfrCompiler.h
++++ b/ovmf-dir/BaseTools/Source/C/VfrCompile/VfrCompiler.h
+@@ -61,7 +61,8 @@ typedef struct {
+ } OPTIONS;
+ 
+ typedef enum {
+-  STATUS_INITIALIZED = 1,
++  STATUS_STARTED = 0,
++  STATUS_INITIALIZED,
+   STATUS_PREPROCESSED,
+   STATUS_COMPILEED,
+   STATUS_GENBINARY,

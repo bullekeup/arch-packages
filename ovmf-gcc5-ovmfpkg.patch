@@ -1,0 +1,14 @@
+diff --git a/OvmfPkg/build.sh b/OvmfPkg/build.sh
+index ac57631..5601d90 100755
+--- a/ovmf-dir/OvmfPkg/build.sh
++++ b/ovmf-dir/OvmfPkg/build.sh
+@@ -91,6 +91,9 @@ case `uname` in
+       4.9.*|4.1[0-9].*)
+         TARGET_TOOLS=GCC49
+         ;;
++      5.[0-9].*)
++        TARGET_TOOLS=GCC5
++        ;;
+       *)
+         TARGET_TOOLS=GCC44
+         ;;

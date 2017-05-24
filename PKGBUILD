@@ -6,7 +6,7 @@
 
 pkgname=xen
 pkgver=4.5.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Virtual Machine Hypervisor & Tools"
 arch=(i686 x86_64)
 url="http://www.xenproject.org/"
@@ -14,6 +14,7 @@ license=(GPL2)
 depends=(bridge-utils curl gnutls iproute2 libaio libcap-ng libiscsi libjpeg-turbo libpng libseccomp lzo2 nss pixman pciutils python python2 sdl yajl spice usbredir)
 [[ "$CARCH" == "x86_64" ]] && depends+=(lib32-glibc)
 makedepends=(bin86 cmake dev86 git iasl markdown ocaml-findlib figlet wget spice-protocol)
+[[ "$CARCH" == "x86_64" ]] && makedepends+=(gcc-multilib lib32-fakeroot lib32-libltdl)
 optdepends=('xen-docs: Official Xen Documentation' 'openvswitch: Optional Networking support')
 conflicts=(xen-4.2{,-testing-hg} xen-{gdbsx,hg-unstable,rc,git} xen-4.3{,-testing-hg})
 backup=(etc/modules-load.d/$pkgname.conf etc/$pkgname/xl.conf etc/conf.d/xen{stored,consoled,domains,commons} etc/$pkgname/grub.conf)
@@ -40,6 +41,10 @@ source=(http://bits.xensource.com/oss-xen/release/$pkgver/$pkgname-$pkgver.tar.g
     ovmf.patch
     ovmf-gcc4.9-basetools.patch
     ovmf-gcc4.9-ovmfpkg.patch
+    ovmf-gcc5.patch
+    ovmf-gcc5-basetools.patch
+    ovmf-gcc5-ovmfpkg.patch
+    ovmf-vfrcompiler.patch
     seabios-gcc5.patch
     efi-xen.cfg
     grub.conf
@@ -74,6 +79,10 @@ sha256sums=('668c11d4fca67ac44329e369f810356eacd37b28d28fb96e66aac77f3c5e1371'
             '1c44b9dc848bb6c3ef2ab76e4807a0b3ed360aea6b13b5b86d2bf5301d14247b'
             '45aae7a1d48357e5f981c12870b5bcac0dd0f630f84e398160d8c9adb42a6674'
             '8e16638d0cc366d1eaae7ccbcf43215853b4444a625478ec8f6e0a2c655370d9'
+            '7b1a96dceff7c9dcb9d27fdcc0d6be5034082da7d68f2b6d290953f2c5956635'
+            '03384d2e797484ed79dde347167aca379006fc5843ecab872c459a1fc8c3d758'
+            'b501b0d5259bfc593e70ad2fedf1ea1d15cd01ef1315ec759f65311042ee9397'
+            '16d85d1e5758f8284591497409e477af522cf12803f14412fbf0f961d8a3e632'
             '091f5eed7e33b45cabb232e9a03dd6c1abae1a820b804c888c20d4b7e673618f'
             'ceaff798a92a7aef1465a0a0b27b1817aedd2c857332b456aaa6dd78dc72438f'
             '3f0af16958c3e057b9baa5afc47050d9adf7dd553274dd97ae4f35938fefb568'
@@ -100,8 +109,12 @@ prepare() {
     # OVMF Compile support (Pulls from GIT repo, so patching to patch after pull request)
     echo "Patching OVMF..."
     patch -Np1 -i "$srcdir/ovmf.patch"
+    patch -Np1 -i "$srcdir/ovmf-gcc5.patch"
     cp "$srcdir/ovmf-gcc4.9-basetools.patch" tools/firmware/
     cp "$srcdir/ovmf-gcc4.9-ovmfpkg.patch" tools/firmware/
+    cp "$srcdir/ovmf-gcc5-basetools.patch" tools/firmware/
+    cp "$srcdir/ovmf-gcc5-ovmfpkg.patch" tools/firmware/
+    cp "$srcdir/ovmf-vfrcompiler.patch" tools/firmware/
 
     # Uncomment line below if you want to enable ATI Passthrough support (some reported successes, untested with 4.4)
     #patch -Np1 -i "$srcdir/ati-passthrough.patch"
@@ -130,7 +143,7 @@ build() {
     ./autogen.sh
     ./configure PYTHON=/usr/bin/python2 --prefix=/usr --sbindir=/usr/bin --with-sysconfig-leaf-dir=conf.d --with-initddir=/etc/init.d \
 		--enable-systemd --disable-docs --enable-stubdom --enable-qemu-traditional --enable-rombios \
-		--with-extra-qemuu-configure-args="--disable-bluez --disable-gtk --enable-spice --enable-usb-redir" # --enable-ovmf
+		--with-extra-qemuu-configure-args="--disable-bluez --disable-gtk --enable-spice --enable-usb-redir" --enable-ovmf
     make LANG=C PYTHON=python2 
 }
 

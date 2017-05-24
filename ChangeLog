@@ -1,3 +1,11 @@
+
+2015-11-13 Axel Moinet <bullekeup - gmail.com>
+	* 4.5.1-1
+	Added OVMF fixes for GCC5
+		http://permalink.gmane.org/gmane.comp.bios.tianocore.devel/14292
+	Added compile fixes for OVMF firmwares (VfrCompiler)
+		http://comments.gmane.org/gmane.comp.bios.tianocore.devel/6809
+
 2015-07-04 David Sutton <kantras - gmail.com>
 	* 4.5.1-1
 	New major release from upstream
